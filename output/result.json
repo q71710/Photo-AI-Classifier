@@ -1,17 +1,33 @@
 {
+  "20251129_161856.jpg": {
+    "scores": {
+      "極限運動": 0.94
+    },
+    "top_label": "極限運動"
+  },
   "baguashan-10.jpg": {
     "scores": {
-      "temple": 0.7750830054283142,
-      "peaceful": 0.13382777571678162,
-      "architecture": 0.0889861136674881
+      "寺廟": 0.65,
+      "文化體驗": 0.13,
+      "靜謐": 0.12,
+      "建築": 0.08
     },
-    "top_label": "temple"
+    "top_label": "寺廟"
+  },
+  "hot-spring.avif": {
+    "scores": {
+      "溫泉": 1.0
+    },
+    "top_label": "溫泉"
   },
   "tokyo-parkong-5.jpg.webp": {
     "scores": {
-      "architecture": 0.8936425447463989,
-      "temple": 0.09626555442810059
+      "建築": 0.4,
+      "溫泉": 0.19,
+      "寺廟": 0.18,
+      "極限運動": 0.07,
+      "親子": 0.06
     },
-    "top_label": "architecture"
+    "top_label": "建築"
   }
 }

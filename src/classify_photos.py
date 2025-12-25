@@ -148,11 +148,26 @@ def load_model(model_name: str = "ViT-B-32", pretrained: str = "laion2b_s34b_b79
     return model, preprocess, tokenizer, device
 
 
+def flatten_labels(data: dict) -> dict:
+    """展平巢狀標籤結構為平面結構"""
+    flat = {}
+    for key, value in data.items():
+        if isinstance(value, dict):
+            # 巢狀結構：key 是分類名稱，value 是標籤字典
+            for label, description in value.items():
+                flat[label] = description
+        else:
+            # 平面結構：key 是標籤，value 是描述
+            flat[key] = value
+    return flat
+
+
 def load_labels(labels_file: Optional[Path] = None) -> dict:
-    """載入標籤配置"""
+    """載入標籤配置（支援巢狀與平面結構）"""
     if labels_file and labels_file.exists():
         with open(labels_file, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            return flatten_labels(data)
     return DEFAULT_LABELS
 
 
@@ -196,7 +211,7 @@ def classify_image(
     scores = {}
     for name, score in zip(label_names, similarity[0].cpu().numpy()):
         if score >= threshold:
-            scores[name] = float(score)
+            scores[name] = round(float(score), 2)
 
     # 按分數排序
     scores = dict(sorted(scores.items(), key=lambda x: -x[1]))

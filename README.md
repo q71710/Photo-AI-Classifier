@@ -1,4 +1,4 @@
-# AI Photo Classifier
+# Photo-AI-Classifier
 
 使用 [OpenCLIP](https://github.com/mlfoundations/open_clip) 模型對旅行照片進行多標籤分類的工具。可自動識別照片中的場景特徵（如山、海、寺廟）與氛圍（如浪漫、靜謐、神秘），並支援從 EXIF 讀取 GPS 定位資訊進行地點識別。
 
@@ -34,14 +34,14 @@ pip install rawpy        # 支援 RAW/DNG 格式
 ## 安裝
 
 ```bash
-cd proj-ai-pic
+cd Photo-AI-Classifier
 pip install -r requirements.txt
 ```
 
 ## 專案結構
 
 ```
-proj-ai-pic/
+Photo-AI-Classifier/
 ├── src/                        # 源代碼
 │   └── classify_photos.py      # 主程式
 ├── config/                     # 配置文件
@@ -283,37 +283,51 @@ python3 src/classify_photos.py --save-labels config/my_labels.json
 
 ## 自訂標籤格式
 
-標籤配置檔為 JSON 格式：
+標籤配置檔為 JSON 格式，支援**巢狀結構**方便分類管理：
 
 ```json
 {
-  "標籤名稱（中文 OK）": "英文描述（用於 AI 比對）"
+  "自然景觀": {
+    "山景": "a photo of mountains, mountain landscape, alpine scenery",
+    "海洋": "a photo of ocean, sea, beach, coastal scenery",
+    "森林": "a photo of forest, trees, woodland"
+  },
+  "氛圍感受": {
+    "浪漫": "a romantic scene, love, couple, intimate atmosphere",
+    "靜謐": "a peaceful and quiet scene, serene, tranquil"
+  }
 }
 ```
+
+程式會自動展平巢狀結構，分類名稱（如「自然景觀」）僅供閱讀，不會送給模型。
 
 ### 標籤名稱 vs 描述
 
 | 欄位 | 用途 | 語言 |
 |------|------|------|
-| **Key（標籤名稱）** | 輸出結果顯示、資料夾命名 | **中文 OK** ✅ |
-| **Value（描述）** | 送給 AI 模型比對 | **建議英文** ⚠️ |
+| **分類名稱** | 僅供閱讀整理，程式會忽略 | 任意 |
+| **標籤名稱** | 輸出結果顯示、資料夾命名 | **中文 OK** ✅ |
+| **描述** | 送給 AI 模型比對 | **建議英文** ⚠️ |
 
 > **為什麼描述要用英文？**
 > OpenCLIP 模型主要使用英文資料訓練，英文描述能獲得更準確的辨識結果。
 > 標籤名稱不會送給模型，純粹是給人看的，所以可以用任何語言。
 
-### 範例
+### 也支援平面結構
+
+如果不需要分類，也可以使用簡單的平面格式：
 
 ```json
 {
-  "山景": "a photo of mountains, mountain landscape, alpine scenery",
-  "海灘": "a photo of beach, ocean waves, sandy shore, tropical",
-  "夜景": "a photo of night view, city lights, illumination",
-  "溫泉": "a photo of hot spring, onsen, spa, thermal bath"
+  "山景": "a photo of mountains, mountain landscape",
+  "海灘": "a photo of beach, ocean waves, sandy shore",
+  "夜景": "a photo of night view, city lights"
 }
 ```
 
-**輸出結果會顯示中文標籤：**
+### 輸出結果
+
+**JSON 輸出會顯示中文標籤：**
 ```json
 {
   "photo.jpg": {
@@ -337,6 +351,7 @@ python3 src/classify_photos.py --save-labels config/my_labels.json
 
 ### 撰寫技巧
 
+- 使用巢狀結構分類管理，方便維護大量標籤
 - 描述越詳細，辨識越準確
 - 可使用逗號分隔多個同義詞
 - 加入相關的英文關鍵字提升辨識率
