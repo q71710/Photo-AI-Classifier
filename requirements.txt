@@ -1,0 +1,5 @@
+open_clip_torch>=2.24.0
+torch>=2.0.0
+Pillow>=9.0.0
+tqdm>=4.60.0
+geopy>=2.4.0

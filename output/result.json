@@ -1,0 +1,17 @@
+{
+  "baguashan-10.jpg": {
+    "scores": {
+      "temple": 0.7750830054283142,
+      "peaceful": 0.13382777571678162,
+      "architecture": 0.0889861136674881
+    },
+    "top_label": "temple"
+  },
+  "tokyo-parkong-5.jpg.webp": {
+    "scores": {
+      "architecture": 0.8936425447463989,
+      "temple": 0.09626555442810059
+    },
+    "top_label": "architecture"
+  }
+}
